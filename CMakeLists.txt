@@ -14,7 +14,8 @@ else()
   set(CMAKE_DEBUG_POSTFIX "")
 endif()
 
-
+# if there are some customized FindXXX modules
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_LIST_DIR}/cmake" CACHE STRING "Modules for CMake" FORCE)
 
 ###################### user-selected option ####################
 option(WITH_OPENMP "Enable OpenMP support?" ON)
