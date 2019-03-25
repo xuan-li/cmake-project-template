@@ -17,32 +17,24 @@ find_path(OpenMesh_INCLUDE_DIR
           NAMES OpenMesh/Core/IO/Options.hh
           PATHS /usr
                 /usr/local
-          ${OpenMesh_DIR}      
+                ${OpenMesh_DIR}      
           PATH_SUFFIXES include
          )
-find_library(OPENMESH_CORE_LIB OpenMeshCore
-    PATHS ${OpenMesh_DIR}/lib PATH_SUFFIXES OpenMesh lib/OpenMesh)
-find_library(OPENMESH_CORED_LIB OpenMeshCored
-    PATHS ${OpenMesh_DIR}/lib PATH_SUFFIXES OpenMesh lib/OpenMesh)
-find_library(OPENMESH_TOOLS_LIB OpenMeshTools
-    PATHS ${OpenMesh_DIR}/lib PATH_SUFFIXES OpenMesh lib/OpenMesh)
-find_library(OPENMESH_TOOLSD_LIB OpenMeshToolsd
-    PATHS ${OpenMesh_DIR}/lib PATH_SUFFIXES OpenMesh lib/OpenMesh)
+find_library(OPENMESH_CORE_LIB NAME OpenMeshCore
+    PATHS ${OpenMesh_DIR}/lib NO_DEFAULT_PATH)
+find_library(OPENMESH_CORED_LIB NAME OpenMeshCored
+    PATHS ${OpenMesh_DIR}/lib NO_DEFAULT_PATH)
+find_library(OPENMESH_TOOLS_LIB NAME OpenMeshTools
+    PATHS ${OpenMesh_DIR}/lib NO_DEFAULT_PATH)
+find_library(OPENMESH_TOOLSD_LIB NAME OpenMeshToolsd
+    PATHS ${OpenMesh_DIR}/lib NO_DEFAULT_PATH)
 
-if(OPENMESH_CORE_LIB AND OPENMESH_CORED_LIB)
-    if(CMAKE_BUILD_TYPE STREQUAL "DEBUG" OR
-        CMAKE_BUILD_TYPE STREQUAL "RELWITHDEBINFO")
-        set(OPENMESH_CORE_LIB ${OPENMESH_CORED_LIB} ${OPENMESH_TOOLSD_LIB})
-        unset(OPENMESH_CORED_LIB)
-    endif()
-elseif(OPENMESH_CORED_LIB)
-    set(OPENMESH_CORE_LIB ${OPENMESH_CORED_LIB} ${OPENMESH_TOOLSD_LIB})
-    unset(OPENMESH_CORED_LIB)
-endif()
-if(OPENMESH_CORE_LIB)
-    set(OpenMesh_LIBRARIES ${OPENMESH_CORE_LIB} ${OPENMESH_TOOLS_LIB})
-endif(OPENMESH_CORE_LIB)
-unset(OPENMESH_CORE_LIB)
+set(OpenMesh_LIBRARIES
+  debug ${OPENMESH_CORED_LIB} ${OPENMESH_TOOLSD_LIB}
+  optimized ${OPENMESH_CORE_LIB} ${OPENMESH_TOOLS_LIB}
+)
+
+message(${OpenMesh_LIBRARIES})
 
 IF(OpenMesh_INCLUDE_DIR AND OpenMesh_LIBRARIES)
    SET(OPENMESH_FOUND TRUE)
