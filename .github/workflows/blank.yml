@@ -25,5 +25,9 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Run a multi-line script
         run: |
+            git clone https://github.com/xuan-li/cmake-project-template.git
+            cd cmake-project-template
+            mkdir build
+            cd build
             cmake .. -DCMAKE_BUILD_TYPE=Release
             make
